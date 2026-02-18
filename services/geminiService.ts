@@ -3,6 +3,7 @@ import { MODEL_NAME, SYSTEM_INSTRUCTION } from "../constants";
 import { AnalysisResult } from "../types";
 
 // Initialize Gemini Client with Environment Variable
+// The API key must be obtained exclusively from the environment variable process.env.API_KEY
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const analyzeContent = async (
@@ -95,7 +96,7 @@ export const analyzeContent = async (
     if (errorMessage.includes("404") || errorMessage.includes("not found")) {
         throw new Error("মডেল সার্ভিসে সমস্যা হচ্ছে (Model not found)। কিছুক্ষণ পর চেষ্টা করুন।");
     } else if (errorMessage.includes("API key")) {
-        throw new Error("API Key সঠিক নয়।");
+        throw new Error("API Key সঠিক নয়। Vercel Settings এ API_KEY চেক করুন।");
     } else {
         throw new Error(`সমস্যা হয়েছে: ${errorMessage}`);
     }
