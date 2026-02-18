@@ -1,0 +1,7 @@
+{
+  "name": "Fake Checker By Radid",
+  "description": "A Bangladesh-centric fact-checking and AI detection tool that analyzes text, images, and links to verify truthfulness and identify AI-generated content.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
