@@ -3,8 +3,14 @@ import { MODEL_NAME, SYSTEM_INSTRUCTION } from "../constants";
 import { AnalysisResult } from "../types";
 
 // Initialize Gemini Client with Environment Variable
-// The API key must be obtained exclusively from the environment variable process.env.API_KEY
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// The API key must be obtained from the environment variable VITE_GEMINI_API_KEY
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY || "";
+
+if (!apiKey) {
+  console.warn("VITE_GEMINI_API_KEY is missing! Please set it in your environment variables.");
+}
+
+const ai = new GoogleGenAI({ apiKey });
 
 export const analyzeContent = async (
   text: string,
@@ -96,7 +102,7 @@ export const analyzeContent = async (
     if (errorMessage.includes("404") || errorMessage.includes("not found")) {
         throw new Error("মডেল সার্ভিসে সমস্যা হচ্ছে (Model not found)। কিছুক্ষণ পর চেষ্টা করুন।");
     } else if (errorMessage.includes("API key")) {
-        throw new Error("API Key সঠিক নয়। Vercel Settings এ API_KEY চেক করুন।");
+        throw new Error("API Key সঠিক নয়। Vercel Settings এ VITE_GEMINI_API_KEY চেক করুন।");
     } else {
         throw new Error(`সমস্যা হয়েছে: ${errorMessage}`);
     }
