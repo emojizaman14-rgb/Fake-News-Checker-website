@@ -99,7 +99,9 @@ export const analyzeContent = async (
     console.error("Gemini API Error:", error);
     const errorMessage = error.message || error.toString();
     
-    if (errorMessage.includes("404") || errorMessage.includes("not found")) {
+    if (errorMessage.includes("429") || errorMessage.includes("RESOURCE_EXHAUSTED") || errorMessage.includes("quota")) {
+        throw new Error("সার্ভারের চাপ বেশি বা আপনার ফ্রি কোটা শেষ হয়ে গেছে। দয়া করে কিছুক্ষণ পর আবার চেষ্টা করুন।");
+    } else if (errorMessage.includes("404") || errorMessage.includes("not found")) {
         throw new Error("মডেল সার্ভিসে সমস্যা হচ্ছে (Model not found)। কিছুক্ষণ পর চেষ্টা করুন।");
     } else if (errorMessage.includes("API key")) {
         throw new Error("API Key সঠিক নয়। Vercel Settings এ VITE_GEMINI_API_KEY চেক করুন।");
